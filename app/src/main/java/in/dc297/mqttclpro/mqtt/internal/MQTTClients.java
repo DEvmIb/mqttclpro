@@ -482,6 +482,7 @@ public class MQTTClients {
             };
             Handler handler = new Handler();
             handler.postDelayed(runnable, 60000);
+            return;
         }
 
 
