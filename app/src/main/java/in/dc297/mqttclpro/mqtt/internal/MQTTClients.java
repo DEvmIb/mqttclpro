@@ -464,13 +464,27 @@ public class MQTTClients {
         }
     }
 
-    public void publishMessage(final BrokerEntity brokerEntity, String topic, String message, int qos, boolean retained, int messageId){
+    public void publishMessage(final BrokerEntity brokerEntity, final String topic, String message, final int qos, final boolean retained, final int messageId){
         if(TextUtils.isEmpty(topic) || brokerEntity==null){
             return;
         }
         if(message==null) message="";
 
         MqttAndroidClient mqttAndroidClient = clients.get(brokerEntity.getId());
+        //
+        if(mqttAndroidClient!=null && !TextUtils.isEmpty(mqttAndroidClient.getClientId()) && mqttAndroidClient.isConnected()==false && qos > 0){
+            final String finalMessage = message;
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                        publishMessage(brokerEntity,topic, finalMessage,qos,retained,messageId);
+                }
+            };
+            Handler handler = new Handler();
+            handler.postDelayed(runnable, 60000);
+        }
+
+
         if(mqttAndroidClient!=null && !TextUtils.isEmpty(mqttAndroidClient.getClientId()) && mqttAndroidClient.isConnected()){
             MqttMessage mqttMessage = new MqttMessage();
             mqttMessage.setId(messageId);

@@ -964,13 +964,13 @@ class MqttConnection implements MqttCallbackExtended {
 	 * Acquires a partial wake lock for this client
 	 */
 	private void acquireWakeLock() {
-		if (wakelock == null) {
+/*		if (wakelock == null) {
 			PowerManager pm = (PowerManager) service
 					.getSystemService(Service.POWER_SERVICE);
 			wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
 					wakeLockTag);
 		}
-		wakelock.acquire();
+		wakelock.acquire();*/
 
 	}
 
